@@ -12,6 +12,7 @@ public class FRC2024TeleopDecisionMaker {
 
   FRC2024TeleopDecisionMaker(){
 
+    m_Chassis = new FRC2024Chassis();
   }
 
   public void initialize(){

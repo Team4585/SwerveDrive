@@ -4,6 +4,7 @@ import java.util.List;
 
 import frc.robot.autonomous.AutonomousTaskBase;
 import frc.robot.autonomous.AutonomousTaskDispatcher;
+import frc.robot.autonomous.tasks.AutoTaskStartSequence;
 
 public class FRC2024AutonomousDecisionMaker {
   private List<AutonomousTaskBase> m_TaskList;
@@ -43,10 +44,14 @@ public class FRC2024AutonomousDecisionMaker {
       17. Set intake off
       18. Drive forwards 1.2m
     */
+    
 
    //System.out.println("Initializing list");
+   AutonomousTaskBase startTask = new AutoTaskStartSequence();
+
    m_TaskList = List.of(
-    );
+    startTask
+   );
 
     m_autoTaskDispatcher = new AutonomousTaskDispatcher(m_TaskList);
 

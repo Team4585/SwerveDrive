@@ -43,7 +43,7 @@ public class SwerveDriveSubsystem extends RoboDevice {
     public SwerveDriveSubsystem() {
         super("Swerve Drive Subsystem");
         // Initialize swerve modules
-        frontLeft = new SwerveModule(1, 2, "Front Left");
+        frontLeft = new SwerveModule(10, 2, "Front Left");
         frontRight = new SwerveModule(3, 4, "Front Right");
         backLeft = new SwerveModule(5, 6, "Back Left");
         backRight = new SwerveModule(7, 8, "Back Right");
