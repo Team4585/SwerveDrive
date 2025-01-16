@@ -23,8 +23,9 @@ public class FRC2024TeleopDecisionMaker {
      // m_Chassis.setTargRotation(((m_TheJoystick.getTwistValue() / 1) * Math.abs(m_TheJoystick.getTwistValue()) * Math.abs(m_TheJoystick.getTwistValue())) / 1);
 
     m_Chassis.setTargSpeed(m_TheJoystick.getForwardBackwardValue(),
-     m_TheJoystick.getSideToSideValue(),
-     m_TheJoystick.getTwistValue());
+      -m_TheJoystick.getSideToSideValue(),
+      -m_TheJoystick.getTwistValue()
+      );
 
       /*
       if (m_TheWeaponsJoystick.getPOV() == 0) {

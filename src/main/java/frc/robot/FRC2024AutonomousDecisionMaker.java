@@ -10,7 +10,7 @@ public class FRC2024AutonomousDecisionMaker {
   private List<AutonomousTaskBase> m_TaskList;
   private AutonomousTaskDispatcher m_autoTaskDispatcher;
 
-  private FRC2024Chassis m_Chassis;
+  //private FRC2024Chassis m_Chassis;
 
   private double chassisKp = 0.007;
   private double chassisKi = 0.12;

@@ -28,26 +28,31 @@ public class SwerveDriveSubsystem extends RoboDevice {
     private static final double TRACK_WIDTH = 0.5; // meters
 
     // Swerve Modules
-    private final SwerveModule frontLeft;
-    private final SwerveModule frontRight;
-    private final SwerveModule backLeft;
-    private final SwerveModule backRight;
+    private SwerveModule frontLeft;
+    private SwerveModule frontRight;
+    private SwerveModule backLeft;
+    private SwerveModule backRight;
+    //x private final SwerveModule frontLeft;
+    //x private final SwerveModule frontRight;
+    //x private final SwerveModule backLeft;
+    //x private final SwerveModule backRight;
 
     // Pigeon IMU
     private final Pigeon2 pigeon;
 
     // Kinematics and Odometry
     private final SwerveDriveKinematics kinematics;
-    private final SwerveDriveOdometry odometry;
+    private SwerveDriveOdometry odometry;
+//x    private final SwerveDriveOdometry odometry;
 
     public SwerveDriveSubsystem() {
         super("Swerve Drive Subsystem");
         // Initialize swerve modules
-        frontLeft = new SwerveModule(10, 2, "Front Left");
-        frontRight = new SwerveModule(3, 4, "Front Right");
-        backLeft = new SwerveModule(5, 6, "Back Left");
-        backRight = new SwerveModule(7, 8, "Back Right");
-
+        backLeft = new SwerveModule(5, 6, true, "Back Left");
+        backRight = new SwerveModule(7, 8, false, "Back Right");
+        frontLeft = new SwerveModule(1, 2, true, "Front Left");
+        frontRight = new SwerveModule(3, 4, false, "Front Right");
+        
         // Initialize Pigeon IMU
         pigeon = new Pigeon2(PIGEON_CAN_ID);
         pigeon.setYaw(0); // Reset yaw to 0
@@ -61,16 +66,16 @@ public class SwerveDriveSubsystem extends RoboDevice {
         );
 
         // Initialize odometry
-        odometry = new SwerveDriveOdometry(
-            kinematics,
-            Rotation2d.fromDegrees(pigeon.getYaw().getValue().magnitude()),
-            new SwerveModulePosition[] {
-                frontLeft.getPosition(),
+         odometry = new SwerveDriveOdometry(
+             kinematics,
+             Rotation2d.fromDegrees(pigeon.getYaw().getValue().magnitude()),
+             new SwerveModulePosition[] {
+                 frontLeft.getPosition(),
                 frontRight.getPosition(),
                 backLeft.getPosition(),
                 backRight.getPosition()
-            }
-        );
+             }
+         );
 
         // Set modules to brake mode
         configureBrakeMode(true);

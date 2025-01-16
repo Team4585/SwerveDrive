@@ -11,8 +11,7 @@ import frc.robot.huskylib.src.RoboDevice;
 //MANUALLY
 public class FRC2024Chassis extends RoboDevice{
 
-  private SwerveDriveSubsystem m_driveTrain = 
-    new SwerveDriveSubsystem();
+  private SwerveDriveSubsystem m_driveTrain = new SwerveDriveSubsystem();
 
   private HuskyVector2D m_currentLocation;
   private double m_currentHeading = 0.0;

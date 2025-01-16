@@ -2,13 +2,13 @@ package frc.robot.huskylib.src;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -18,21 +18,24 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 class SwerveModule extends RoboDevice{
     // Constants
     private static final double WHEEL_DIAMETER = 0.0762; // 3 inches in meters
-    private static final double DRIVE_GEAR_RATIO = 4.71;
+    private static final double DRIVE_GEAR_RATIO = 4.13;
     private static final double STEER_GEAR_RATIO = 41.25;
-    private static final double MAX_SPEED = 3.0; // meters per second
+    private static final double MAX_SPEED = 4.0; // meters per second
 
     // Hardware
-    private final SparkMax driveMotor;
-    private final SparkMax steerMotor;
+//x    private final SparkMax driveMotor;
+    private SparkMax driveMotor;
+    private SparkMax steerMotor;
     private SparkMaxConfig driveConfig;
     private SparkMaxConfig steerConfig;
-    private final RelativeEncoder driveEncoder;
-    private final RelativeEncoder steerEncoder;
-    private final SparkClosedLoopController steerPid;
-    private final String moduleName;
+//x    private final RelativeEncoder driveEncoder;
+    private RelativeEncoder driveEncoder;
+    private RelativeEncoder steerEncoder;
+    private SparkClosedLoopController steerPid;
+    private String moduleName;
 
-    public SwerveModule(int driveMotorId, int steerMotorId, String moduleName) {
+    public SwerveModule(int driveMotorId, int steerMotorId, Boolean inversion, String moduleName) {
+    
         super("Swerve Module");
         this.moduleName = moduleName;
 
@@ -48,7 +51,7 @@ class SwerveModule extends RoboDevice{
         steerPid = steerMotor.getClosedLoopController();
 
         // Configure PID
-        steerConfig.closedLoop.pid(0.5, 0.0, 0.0);
+        steerConfig.closedLoop.pid(0.05, 0.0, 0.0);
         steerConfig.closedLoop.maxOutput(1);
         steerConfig.closedLoop.minOutput(-1);
         //steerPIDController.setOutputRange(-1, 1);
@@ -57,6 +60,7 @@ class SwerveModule extends RoboDevice{
         double driveConversionFactor = (Math.PI * WHEEL_DIAMETER) / DRIVE_GEAR_RATIO;
         //driveEncoder.setPositionConversionFactor(driveConversionFactor);
         //driveEncoder.setVelocityConversionFactor(driveConversionFactor / 60.0);
+        driveConfig.inverted(inversion);
         driveConfig.encoder.positionConversionFactor(driveConversionFactor);
         driveConfig.encoder.velocityConversionFactor(driveConversionFactor/60.0);
 
@@ -69,8 +73,8 @@ class SwerveModule extends RoboDevice{
         // Save configurations
         //driveMotor.burnFlash();
         //steerMotor.burnFlash();
-        driveMotor.configure(driveConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        steerMotor.configure(steerConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        driveMotor.configure(driveConfig, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
+        steerMotor.configure(steerConfig, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
 
         // Log configuration
         SmartDashboard.putString(moduleName + " Status", "Initialized");
@@ -93,7 +97,7 @@ class SwerveModule extends RoboDevice{
         state.optimize(Rotation2d.fromDegrees(steerEncoder.getPosition()));
     
         // Set drive speed
-        driveMotor.set(state.speedMetersPerSecond / MAX_SPEED);
+        driveMotor.set(state.speedMetersPerSecond);
         
         // Set steering angle
         steerPid.setReference(

@@ -13,7 +13,7 @@ public class FRC2024Joystick extends HuskyJoystick{
   private static final double SS_DEAD_ZONE = 0.2;
   private static final double SS_LIVE_ZONE = 1.0 - SS_DEAD_ZONE;
 
-  private static final double ROT_DEAD_ZONE = 0.1;
+  private static final double ROT_DEAD_ZONE = 0.3;
   private static final double ROT_LIVE_ZONE = 1.0 - ROT_DEAD_ZONE;
 
 
