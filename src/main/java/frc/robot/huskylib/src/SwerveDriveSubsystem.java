@@ -23,7 +23,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class SwerveDriveSubsystem extends RoboDevice {
     // Constants
     private static final int PIGEON_CAN_ID = 9;
-    private static final double MAX_SPEED = 3.0; // meters per second
+    private static final double MAX_SPEED = 1.0; // meters per second
     private static final double WHEEL_BASE = 0.5; // meters
     private static final double TRACK_WIDTH = 0.5; // meters
 
@@ -115,6 +115,19 @@ public class SwerveDriveSubsystem extends RoboDevice {
 
         // Update dashboard
         updateSmartDashboard();
+    }
+
+    public void resetPigeon(){
+        pigeon.reset();
+    }
+
+    public void switchRelativity(){
+        boolean driverOriented = true;
+        if(driverOriented){
+
+        }else{
+            
+        }
     }
 
     private void updateSmartDashboard() {

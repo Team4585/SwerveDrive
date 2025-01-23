@@ -6,6 +6,7 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.SparkClosedLoopController;
+import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -13,6 +14,8 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.AnalogEncoder;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 class SwerveModule extends RoboDevice{
@@ -34,7 +37,10 @@ class SwerveModule extends RoboDevice{
     private SparkClosedLoopController steerPid;
     private String moduleName;
 
-    public SwerveModule(int driveMotorId, int steerMotorId, Boolean inversion, String moduleName) {
+    public SwerveModule(int driveMotorId, 
+    int steerMotorId,
+     Boolean inversion, 
+     String moduleName) {
     
         super("Swerve Module");
         this.moduleName = moduleName;
@@ -50,11 +56,13 @@ class SwerveModule extends RoboDevice{
         steerEncoder = steerMotor.getEncoder();
         steerPid = steerMotor.getClosedLoopController();
 
+        
         // Configure PID
-        steerConfig.closedLoop.pid(0.05, 0.0, 0.0);
+        steerConfig.closedLoop.pid(0.01, 0.0, 0.0);
         steerConfig.closedLoop.maxOutput(1);
         steerConfig.closedLoop.minOutput(-1);
         //steerPIDController.setOutputRange(-1, 1);
+        
 
         // Set conversion factors
         double driveConversionFactor = (Math.PI * WHEEL_DIAMETER) / DRIVE_GEAR_RATIO;
@@ -70,6 +78,8 @@ class SwerveModule extends RoboDevice{
         steerConfig.encoder.positionConversionFactor(steerConversionFactor);
         steerConfig.encoder.velocityConversionFactor(steerConversionFactor/60.0);
 
+        
+
         // Save configurations
         //driveMotor.burnFlash();
         //steerMotor.burnFlash();
@@ -78,6 +88,7 @@ class SwerveModule extends RoboDevice{
 
         // Log configuration
         SmartDashboard.putString(moduleName + " Status", "Initialized");
+
     }
 
     public SwerveModuleState getState() {
@@ -86,6 +97,7 @@ class SwerveModule extends RoboDevice{
                 Rotation2d.fromDegrees(steerEncoder.getPosition()) // Use fromDegrees since our position is in degrees
         );
     }
+
 
     public void setDesiredState(SwerveModuleState desiredState) {
         // Create current state

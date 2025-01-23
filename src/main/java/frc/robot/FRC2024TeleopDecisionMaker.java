@@ -1,5 +1,7 @@
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.IFollower;
+
 public class FRC2024TeleopDecisionMaker {
   private FRC2024Joystick m_TheJoystick = new FRC2024Joystick();
   private FRC2024WeaponsJoystick m_TheWeaponsJoystick = new FRC2024WeaponsJoystick();
@@ -8,7 +10,7 @@ public class FRC2024TeleopDecisionMaker {
 
   private FRC2024Chassis m_Chassis;
 
-
+  boolean isFieldOriented = false;
 
   FRC2024TeleopDecisionMaker(){
 
@@ -19,31 +21,27 @@ public class FRC2024TeleopDecisionMaker {
   }
 
   public void doDecisions(){
-     // m_Chassis.setTargForwardBack(m_TheJoystick.getForwardBackwardValue() * Math.abs(m_TheJoystick.getForwardBackwardValue()));
-     // m_Chassis.setTargRotation(((m_TheJoystick.getTwistValue() / 1) * Math.abs(m_TheJoystick.getTwistValue()) * Math.abs(m_TheJoystick.getTwistValue())) / 1);
 
     m_Chassis.setTargSpeed(m_TheJoystick.getForwardBackwardValue(),
       -m_TheJoystick.getSideToSideValue(),
-      -m_TheJoystick.getTwistValue()
+      -m_TheJoystick.getTwistValue(),
+      isFieldOriented
       );
 
-      /*
-      if (m_TheWeaponsJoystick.getPOV() == 0) {
-        m_Intake.suck(1);
-      } else if (m_TheWeaponsJoystick.getPOV() == 180) {
-        m_Intake.suck(-1);
-      } else {
-        m_Intake.suck(0);
+      if (m_TheJoystick.button7PressEvent()) {
+        if (isFieldOriented) {
+          isFieldOriented = false;
+        }else{
+          isFieldOriented = true;
+        }
       }
 
-      if (m_TheWeaponsJoystick.triggerPushed()) {
-        m_Shooter.set(1);
-      } else {
-        m_Shooter.set(0);
+      if (m_TheJoystick.button9PressEvent()) {
+        m_Chassis.resetPigeon();
       }
-      */
 
-      //System.out.println(m_Chassis.getLeftPosition());
+
+
   }
 
 }

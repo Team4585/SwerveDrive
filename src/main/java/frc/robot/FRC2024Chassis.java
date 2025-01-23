@@ -38,8 +38,12 @@ public class FRC2024Chassis extends RoboDevice{
   }
 */
 
-  public void setTargSpeed(double targFB, double targSS,double targRot){
-    m_driveTrain.drive(targFB, targSS, targRot, false);
+  public void setTargSpeed(double targFB, double targSS,double targRot, boolean fieldRelative){
+    m_driveTrain.drive(targFB, targSS, targRot, fieldRelative);
+  }
+
+  public void resetPigeon(){
+    m_driveTrain.resetPigeon();
   }
 
   @Override
